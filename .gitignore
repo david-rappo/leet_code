@@ -1,3 +1,21 @@
+# https://git-scm.com/docs/gitignore
+
+#
+# Generated files - all crates should ignore.
+#
+
+# Match in all directories
+**/target/
+**/.vs/
+
+#
+# Library crates should ignore Cargo.lock
+#
+Cargo.lock
+
+# Visual Studio Code
+.vscode
+
 # Prerequisites
 *.d
 
