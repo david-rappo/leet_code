@@ -17,11 +17,6 @@ pub fn minimum_absolute_difference(arr: Vec<i32>) -> Vec<Vec<i32>> {
         let x = numbers[index];
         let y = numbers[index + 1];
         let abs_diff = absolute_difference(x, y);
-        if abs_diff == best_abs_diff {
-            vec_pairs.push(vec![x, y]);
-        }
-        
-        /*
         if abs_diff < best_abs_diff {
             best_abs_diff = abs_diff;
             vec_pairs.clear();
@@ -29,7 +24,6 @@ pub fn minimum_absolute_difference(arr: Vec<i32>) -> Vec<Vec<i32>> {
         } else if abs_diff == best_abs_diff {
             vec_pairs.push(vec![x, y]);
         }
-        */
 
         index += 1;
     }
