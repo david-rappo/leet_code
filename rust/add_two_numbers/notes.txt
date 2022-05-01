@@ -1,0 +1,12 @@
+Notes
+
+fn get_count(node: &Option<Box<ListNode>>) -> usize {
+    let mut count = 0;
+    let mut current_node = node;
+    while let Some(n) = current_node {
+        count += 1;
+        current_node = &n.next;
+    }
+
+    count
+}
