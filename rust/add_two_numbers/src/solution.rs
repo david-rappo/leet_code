@@ -5,6 +5,7 @@ pub struct ListNode {
 }
 
 impl ListNode {
+    #[allow(dead_code)]
     fn new(val: i32) -> Self {
         ListNode {
             val,
@@ -13,20 +14,34 @@ impl ListNode {
     }
 }
 
+// This page shows one way to create a singly linked list in safe Rust:
+// https://stackoverflow.com/questions/54015194/two-sum-leetcode-rust-solution
+//
+// Learn Rust With Entirely Too Many Linked Lists
+// https://rust-unofficial.github.io/too-many-lists/
+//
+// std::mem::replace could also be useful when implementing Linked Lists in Rust.
+// https://doc.rust-lang.org/std/mem/fn.replace.html
+#[allow(dead_code)]
 pub fn create_list(digits: &[i32]) -> Option<Box<ListNode>> {
     if digits.is_empty() {
         return None;
     }
 
-    let mut head_node = ListNode::new(digits[0]);
-    let node = &mut head_node;
+    let mut head_node = Some(Box::new(ListNode::new(digits[0])));
+    let mut node = &mut head_node;
     for index in 1..digits.len() {
-        let new_node = Box::new(ListNode::new(digits[index]));
-        node.next = Some(new_node);
-        // TODO: How to do this.
+        node = match node.as_mut() {
+            Some(match_node) => {
+                let new_node = Box::new(ListNode::new(digits[index]));
+                match_node.next = Some(new_node);
+                &mut match_node.next
+            },
+            _ => unreachable!()
+        };
     }
     
-    None
+    head_node
 }
 
 // l1 = 243
@@ -39,6 +54,7 @@ pub fn create_list(digits: &[i32]) -> Option<Box<ListNode>> {
 // 564
 // ---
 // 708
+#[allow(dead_code)]
 pub fn add_two_numbers(l1: Option<Box<ListNode>>,
     l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let mut list_1 = l1.as_ref();
