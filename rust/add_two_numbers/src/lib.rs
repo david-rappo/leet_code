@@ -48,9 +48,21 @@ mod tests {
         assert_eq!(true, is_equal(&expected_result, &result));
     }
 
+    // Conventional - the least significant digit is on the right
+    // 123 +
+    // 001
+    // ---
+    // 124
+    
+    // Reversed- the least significant digit is on the *left*
+    // 321 +
+    // 100
+    // ---
+    // 421
+
     #[test]
     fn example_three() {
-        let x = solution::create_list(&[7, 7, 7, 7, 7, 7, 7]);
+        let x = solution::create_list(&[9, 9, 9, 9, 9, 9, 9]);
         let y = solution::create_list(&[9, 9, 9, 9]);
         let expected_result = [8, 9, 9, 9, 0, 0, 0, 1];
         let result = solution::add_two_numbers(x, y);
