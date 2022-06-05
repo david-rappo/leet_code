@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 #[allow(dead_code)]
 pub fn length_of_longest_substring(s: &str) -> usize {
@@ -6,36 +6,52 @@ pub fn length_of_longest_substring(s: &str) -> usize {
         return 0;
     }
 
-    let mut hash_set = HashSet::new();
+    let mut hash_map = HashMap::new();
     let bytes = s.as_bytes();
     let mut result_range = (0, 0);
-    // For example,
-    // s = abccxy
-    // substring 0: [0, 3)
-    // substring 0: [3, 6)
     let mut begin_index = 0;
     for index in 0..bytes.len() {
         let character = bytes[index];
-        if !hash_set.insert(character) {
+        if hash_map.contains_key(&character) {
             let new_result_range = (begin_index, index);
             if is_greater(&new_result_range, &result_range) {
                 result_range = new_result_range;
             }
-            
-            begin_index = index;
-            hash_set.clear();
-            hash_set.insert(character);
+
+            // For example,
+            // 0 1 2 3 4 5 6 7
+            // a b c a b c b b
+            //       B     I
+            //           X
+            let index_of_character = hash_map.get(&character);
+            debug_assert!(index_of_character.is_some());
+            let previous_begin_index = begin_index;
+            begin_index = index_of_character.unwrap() + 1;
+            remove(previous_begin_index, begin_index, bytes, &mut hash_map);
+            hash_map.insert(character, index);
+        } else {
+            hash_map.insert(character, index);
         }
     }
-
-    if !hash_set.is_empty() {
+    
+    if !hash_map.is_empty() {
         let new_result_range = (begin_index, bytes.len());
         if is_greater(&new_result_range, &result_range) {
             result_range = new_result_range;
         }
     }
-
+    
     result_range.1 - result_range.0
+}
+
+fn remove(begin_index: usize,
+    end_index: usize,
+    bytes: &[u8],
+    hash_map: &mut HashMap<u8, usize>) {
+    for index in begin_index..end_index {
+        let c = bytes[index];
+        hash_map.remove(&c);
+    }
 }
 
 fn get_length(range: &(usize, usize)) -> usize {

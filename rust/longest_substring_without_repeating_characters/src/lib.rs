@@ -4,8 +4,8 @@ mod solution;
 mod tests {
     use crate::solution;
 
-    const ARGUMENTS: [&str; 3] = ["abcabcbb", "bbbbb", "pwwkew"];
-    const EXPECTED_RESULTS: [usize; 3] = [3, 1, 3];
+    const ARGUMENTS: [&str; 4] = ["abcabcbb", "bbbbb", "pwwkew", "dvdf"];
+    const EXPECTED_RESULTS: [usize; 4] = [3, 1, 3, 3];
 
     #[test]
     fn all_tests() {
