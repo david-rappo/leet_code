@@ -48,9 +48,8 @@ fn remove(begin_index: usize,
     end_index: usize,
     bytes: &[u8],
     hash_map: &mut HashMap<u8, usize>) {
-    for index in begin_index..end_index {
-        let c = bytes[index];
-        hash_map.remove(&c);
+    for iter in bytes.iter().take(end_index).skip(begin_index) {
+        hash_map.remove(iter);
     }
 }
 
