@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+#[allow(dead_code)]
 pub fn longest_palindrome(s: String) -> String {
     if s.is_empty() {
         return String::new();
