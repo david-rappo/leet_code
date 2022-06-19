@@ -63,13 +63,14 @@ fn create_string(bytes: &[u8], range: &(usize, usize)) -> String {
 
 fn create_hash_map(bytes: &[u8]) -> HashMap<u8, Vec<usize>> {
     let mut hash_map: HashMap<u8, Vec<usize>> = HashMap::new();
-    for index in 0..bytes.len() {
-        let b = bytes[index];
-        if hash_map.contains_key(&b) {
-            let v = hash_map.get_mut(&b);
+    for iter in bytes.iter().enumerate() {
+        let index = iter.0;
+        let b = iter.1;
+        if hash_map.contains_key(b) {
+            let v = hash_map.get_mut(b);
             v.unwrap().push(index);
         } else {
-            hash_map.insert(b, vec![index; 1]);
+            hash_map.insert(*b, vec![index; 1]);
         }
     }
 

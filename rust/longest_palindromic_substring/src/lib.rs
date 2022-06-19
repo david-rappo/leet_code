@@ -4,8 +4,16 @@ mod solution;
 mod tests {
     use crate::solution;
 
-    const PARAMETER_1: [&str; 3] = ["abaxyzzyxf", "babad", "cbbd"];
-    const EXPECTED_RESULTS: [&str; 3] = ["xyzzyx", "bab", "bb"];
+    const PARAMETER_1: [&str; 5] = ["abaxyzzyxf",
+        "babad",
+        "cbbd",
+        "xxxxx",
+        "abaxxxxxreerx"];
+    const EXPECTED_RESULTS: [&str; 5] = ["xyzzyx",
+        "bab",
+        "bb",
+        "xxxxx",
+        "xxxxx"];
 
     #[test]
     fn test_one() {
@@ -28,5 +36,17 @@ mod tests {
     fn test_three() {
         let result = solution::longest_palindrome(PARAMETER_1[2].to_owned());
         assert_eq!(result, EXPECTED_RESULTS[2]);
+    }
+
+    #[test]
+    fn test_four() {
+        let result = solution::longest_palindrome(PARAMETER_1[3].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[3]);
+    }
+
+    #[test]
+    fn test_five() {
+        let result = solution::longest_palindrome(PARAMETER_1[4].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[4]);
     }
 }
