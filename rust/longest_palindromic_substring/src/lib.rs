@@ -6,14 +6,14 @@ mod tests {
 
     const PARAMETER_1: [&str; 5] = ["abaxyzzyxf",
         "babad",
-        "cbbd",
+        "cbbbd",
         "xxxxx",
         "abaxxxxxreerx"];
     const EXPECTED_RESULTS: [&str; 5] = ["xyzzyx",
         "bab",
-        "bb",
+        "bbb",
         "xxxxx",
-        "xxxxx"];
+        "xreerx"];
 
     #[test]
     fn test_one() {
