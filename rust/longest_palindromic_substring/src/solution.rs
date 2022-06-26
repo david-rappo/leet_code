@@ -9,20 +9,17 @@ pub fn longest_palindrome_gold(s: String) -> String {
     // best_range is inclusive. For example, [begin_index, last_index]
     let mut best_range: (usize, usize) = (0, 0);
     for index in 0..bytes.len() {
-        let mut new_range = (index, index);
         if is_even_palindrome_two(bytes, index) {
-            new_range = (index, index + 1);
+            let mut new_range = (index, index + 1);
+            new_range = get_palindrome_greater_one(bytes, &new_range);
+            best_range = *maximum_range(&best_range, &new_range);
         }
 
         if is_odd_palindrome_three(bytes, index) {
-            new_range = (index - 1, index + 1);
-        }
-
-        if new_range.0 < new_range.1 {
+            let mut new_range = (index - 1, index + 1);
             new_range = get_palindrome_greater_one(bytes, &new_range);
+            best_range = *maximum_range(&best_range, &new_range);
         }
-
-        best_range = *maximum_range(&best_range, &new_range);
     }
     
     create_string(bytes, &best_range)

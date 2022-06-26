@@ -4,16 +4,18 @@ mod solution;
 mod tests {
     use crate::solution;
 
-    const PARAMETER_1: [&str; 5] = ["abaxyzzyxf",
+    const PARAMETER_1: [&str; 6] = ["abaxyzzyxf",
         "babad",
         "cbbbd",
         "xxxxx",
-        "abaxxxxxreerx"];
-    const EXPECTED_RESULTS: [&str; 5] = ["xyzzyx",
+        "abaxxxxxreerx",
+        "aaaa"];
+    const EXPECTED_RESULTS: [&str; 6] = ["xyzzyx",
         "bab",
         "bbb",
         "xxxxx",
-        "xreerx"];
+        "xreerx",
+        "aaaa"];
     
     //
     // solution::longest_palindrome
@@ -54,6 +56,12 @@ mod tests {
         assert_eq!(result, EXPECTED_RESULTS[4]);
     }
 
+    #[test]
+    fn test_six() {
+        let result = solution::longest_palindrome(PARAMETER_1[5].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[5]);
+    }
+
     //
     // solution::longest_palindrome_gold
     //
@@ -91,5 +99,11 @@ mod tests {
     fn test_five_gold() {
         let result = solution::longest_palindrome_gold(PARAMETER_1[4].to_owned());
         assert_eq!(result, EXPECTED_RESULTS[4]);
+    }
+
+    #[test]
+    fn test_six_gold() {
+        let result = solution::longest_palindrome_gold(PARAMETER_1[5].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[5]);
     }
 }
