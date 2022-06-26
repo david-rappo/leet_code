@@ -12,7 +12,9 @@ pub fn longest_palindrome_gold(s: String) -> String {
         let mut new_range = (index, index);
         if is_even_palindrome_two(bytes, index) {
             new_range = (index, index + 1);
-        } else if is_odd_palindrome_three(bytes, index) {
+        }
+
+        if is_odd_palindrome_three(bytes, index) {
             new_range = (index - 1, index + 1);
         }
 
@@ -20,14 +22,20 @@ pub fn longest_palindrome_gold(s: String) -> String {
             new_range = get_palindrome_greater_one(bytes, &new_range);
         }
 
-        let best_range_length = get_length(&best_range);
-        let new_range_length = get_length(&new_range);
-        if new_range_length > best_range_length {
-            best_range = new_range;
-        }
+        best_range = *maximum_range(&best_range, &new_range);
     }
     
     create_string(bytes, &best_range)
+}
+
+fn maximum_range<'a>(left: &'a(usize, usize), right: &'a(usize, usize)) -> &'a(usize, usize) {
+    let left_length = get_length(left);
+    let right_length = get_length(right);
+    if left_length < right_length {
+        right
+    } else {
+        left
+    }
 }
 
 #[allow(dead_code)]
