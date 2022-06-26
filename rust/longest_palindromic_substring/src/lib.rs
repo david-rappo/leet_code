@@ -14,7 +14,11 @@ mod tests {
         "bbb",
         "xxxxx",
         "xreerx"];
-
+    
+    //
+    // solution::longest_palindrome
+    //
+    
     #[test]
     fn test_one() {
         let result = solution::longest_palindrome(PARAMETER_1[0].to_owned());
@@ -47,6 +51,45 @@ mod tests {
     #[test]
     fn test_five() {
         let result = solution::longest_palindrome(PARAMETER_1[4].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[4]);
+    }
+
+    //
+    // solution::longest_palindrome_gold
+    //
+
+    #[test]
+    fn test_one_gold() {
+        let result = solution::longest_palindrome_gold(PARAMETER_1[0].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[0]);
+    }
+
+    #[test]
+    fn test_two_gold() {
+        let result = solution::longest_palindrome_gold(PARAMETER_1[1].to_owned());
+        let other_valid_answer = "aba";
+        if result == EXPECTED_RESULTS[1] {
+            assert_eq!(result, EXPECTED_RESULTS[1]);
+        } else {
+            assert_eq!(result, other_valid_answer);
+        }
+    }
+
+    #[test]
+    fn test_three_gold() {
+        let result = solution::longest_palindrome_gold(PARAMETER_1[2].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[2]);
+    }
+
+    #[test]
+    fn test_four_gold() {
+        let result = solution::longest_palindrome_gold(PARAMETER_1[3].to_owned());
+        assert_eq!(result, EXPECTED_RESULTS[3]);
+    }
+
+    #[test]
+    fn test_five_gold() {
+        let result = solution::longest_palindrome_gold(PARAMETER_1[4].to_owned());
         assert_eq!(result, EXPECTED_RESULTS[4]);
     }
 }
