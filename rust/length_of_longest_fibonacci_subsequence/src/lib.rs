@@ -15,4 +15,12 @@ mod tests {
             assert_eq!(result, EXPECTED_RESULT[index]);
         }
     }
+
+    #[test]
+    fn test_dynamic() {
+        for (index, element) in PARAMETER_1.iter().enumerate() {
+            let result = solution::longest_fibonacci_subsequence_dynamic(element.to_vec());
+            assert_eq!(result, EXPECTED_RESULT[index]);
+        }
+    }
 }
