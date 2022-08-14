@@ -4,9 +4,15 @@ mod solution;
 mod tests {
     use crate::solution;
 
-    const PARAMETER_1: [&str; 2] = ["PAYPALISHIRING", "PAYPALISHIRING"];
-    const PARAMETER_2: [usize; 2] = [3, 4];
-    const EXPECTED_RESULT: [&str; 2] = ["PAHNAPLSIIGYIR", "PINALSIGYAHRPI"];
+    const PARAMETER_1: [&str; 4] = ["PAYPALISHIRING",
+        "PAYPALISHIRING",
+        "PAYPALISHIRING",
+        "PAYPALISHIRING"];
+    const PARAMETER_2: [usize; 4] = [3, 4, 1, 2];
+    const EXPECTED_RESULT: [&str; 4] = ["PAHNAPLSIIGYIR",
+        "PINALSIGYAHRPI",
+        "PAYPALISHIRING",
+        "PYAIHRNAPLSIIG"];
 
     #[test]
     fn test_solution() {

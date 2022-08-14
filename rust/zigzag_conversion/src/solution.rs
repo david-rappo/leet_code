@@ -36,7 +36,7 @@ pub fn convert(s: String, num_rows: i32) -> String {
                 column_index += 1;
             }
         } else {
-            while (character_index < bytes.len()) && (row_index > 0) {
+            while (row_index > 0) && (character_index < bytes.len()) {
                 let character = bytes[character_index];
                 grid.set_value(row_index, column_index, character);
                 row_index -= 1;
@@ -101,17 +101,33 @@ fn get_result(grid: &Grid, count: usize) -> String {
     String::from_utf8(result).unwrap()
 }
 
-fn calculate_column_count(row_count: usize, _character_count: usize) -> usize {
+fn calculate_column_count(row_count: usize, character_count: usize) -> usize {
+    if 0 == row_count {
+        return 0;
+    }
+    
     // Example
     // row_count = 1
     // character_count = 14
     // 0 P A Y P A L I S H I R I N G
+    if row_count == 1 {
+        return character_count;
+    }
 
     // Example
     // row_count = 2
     // character_count = 14
     // 0 P Y A I H R N
     // 1 A P L S I I G
+    if row_count == 2 {
+        let mut column_count = character_count / row_count;
+        let remainder = character_count % row_count;
+        if 0 != remainder {
+            column_count += 1;
+        }
+
+        return column_count;
+    }
 
     // Example
     // row_count = 5
@@ -125,7 +141,12 @@ fn calculate_column_count(row_count: usize, _character_count: usize) -> usize {
     //
     // For every two vertical columns of characters there is row_count minus two
     // columns between them.
-    
-    // TODO:
-    row_count
+    let mut column_count = character_count / row_count;
+    let remainder = character_count % row_count;
+    if 0 != remainder {
+        column_count += 1;
+    }
+
+    column_count += (column_count - 1) * (row_count - 2);
+    column_count
 }
