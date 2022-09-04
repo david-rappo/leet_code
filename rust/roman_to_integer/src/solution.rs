@@ -1,20 +1,20 @@
 use std::collections::HashMap;
 
+// TODO: Untested - check.
 #[allow(dead_code)]
 pub fn roman_to_int(s: String) -> i32 {
     if s.is_empty() {
-        return 0i32;
+        return 0;
     }
     
     let bytes = s.as_bytes();
     let roman_numeral_to_value = create_roman_numeral_to_value();
     if bytes.len() < 2 {
-        return *roman_numeral_to_value.get(&bytes[0]).unwrap() as i32;
+        return *roman_numeral_to_value.get(&bytes[0]).unwrap();
     }
 
     let mut index = 0;
-    let mut sum = 0u32;
-    // TODO: Untested - check.
+    let mut sum = 0;
     while index < bytes.len() - 1 {
         let character = bytes[index];
         let value = roman_numeral_to_value.get(&character).unwrap();
@@ -28,13 +28,20 @@ pub fn roman_to_int(s: String) -> i32 {
             index += 2;
         } else {
             sum += value;
+            index += 1;
         }
     }
+
+    if index < bytes.len() {
+        let character = bytes[index];
+        let value = roman_numeral_to_value.get(&character).unwrap();
+        sum += value;
+    }
     
-    sum as i32
+    sum
 }
 
-fn create_roman_numeral_to_value() -> HashMap<u8, u32> {
+fn create_roman_numeral_to_value() -> HashMap<u8, i32> {
     let mut hash_map = HashMap::new();
     hash_map.insert(b'I', 1);
     hash_map.insert(b'V', 5);
