@@ -1,15 +1,17 @@
 mod solution;
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::solution;
+
+    const PARAMETER_1: [&str; 3] = ["III", "LVIII", "MCMXCIV"];
+    const EXPECTED_RESULT: [i32; 3] = [3, 58, 1994];
 
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn test_solution() {
+        for index in 0..PARAMETER_1.len() {
+            let result = solution::roman_to_int(PARAMETER_1[index].to_owned());
+            assert_eq!(result, EXPECTED_RESULT[index]);
+        }
     }
 }
