@@ -12,7 +12,15 @@ pub fn reverse(x: i32) -> i32 {
     }
 
     let str_x = String::from_utf8_lossy(&bytes);
-    let result: i32 = str_x.parse().unwrap();
+    let result: i32 = match str_x.parse() {
+        Ok(value) => {
+            value
+        },
+        Err(_) => {
+            0
+        }
+    };
+    
     if is_signed {
         -result
     } else {
