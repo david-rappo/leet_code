@@ -4,8 +4,8 @@ mod solution;
 mod tests {
     use crate::solution;
 
-    const PARAMETER_1: [i32; 1] = [123];
-    const EXPECTED_RESULT: [i32; 1] = [321];
+    const PARAMETER_1: [i32; 3] = [123, -123, 120];
+    const EXPECTED_RESULT: [i32; 3] = [321, -321, 21];
 
     #[test]
     fn test_solution() {
