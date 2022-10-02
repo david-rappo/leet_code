@@ -4,9 +4,11 @@ mod solution;
 mod tests {
     use crate::solution;
 
-    const PARAMETER_1: [&[&str]; 2] = [&["flower", "flow", "flight"],
-        &["dog", "racecar", "car"]];
-    const EXPECTED_RESULT: [&str; 2] = ["fl", ""];
+    const PARAMETER_1: [&[&str]; 4] = [&["flower", "flow", "flight"],
+        &["dog", "racecar", "car"],
+        &["a"],
+        &["coffee", "coffe", "coffe"]];
+    const EXPECTED_RESULT: [&str; 4] = ["fl", "", "a", "coffe"];
 
     fn create_vec(index: usize) -> Vec<String> {
         let mut v = vec![];

@@ -8,12 +8,13 @@ pub fn longest_common_prefix(strs: Vec<String>) -> String {
     for (index, character) in first_string.iter().enumerate() {
         for s in strs.iter().skip(1) {
             let bytes = s.as_bytes();
-            if bytes[index] != *character {
+            if ((index < bytes.len()) && (bytes[index] != *character)) ||
+                (index >= bytes.len()) {
                 let prefix = &first_string[..index];
                 return String::from_utf8_lossy(prefix).to_string();
             }
         }
     }
 
-    String::new()
+    strs[0].to_string()
 }
