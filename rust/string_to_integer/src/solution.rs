@@ -17,40 +17,47 @@ pub fn string_to_integer(s: String) -> i32 {
         is_positive = PLUS == bytes[begin_index];
         begin_index += 1;
     }
+
+    if begin_index == bytes.len() {
+        return 0;
+    }
     
-    let end_index = bytes.iter().skip(begin_index).position(|c| !is_digit(*c));
+    let end_index = bytes.iter().skip(begin_index).position(
+        |c| !is_digit(*c));
     let end_index = match end_index {
         Some(end_index) => end_index,
         None => bytes.len()
     };
 
-    let mut new_bytes = vec![];
-    let count = end_index - begin_index;
-    if is_sign_character && (!is_positive) {
-        new_bytes.reserve(count + 1);
-        new_bytes.push(MINUS);
-    } else {
-        new_bytes.reserve(count);
+    let digit_count = end_index - begin_index;
+    if digit_count == 0 {
+        return 0;
     }
+    
+    let mut exponent = digit_count - 1;
+    let mut result: i32 = 0;
+    for digit in bytes.iter().take(end_index).skip(begin_index) {
+        let power_result = 10i32.overflowing_pow(exponent as u32);
+        if power_result.1 {
+            return out_of_range(is_positive);
+        }
+        
+        let digit = digit_to_integer(*digit).unwrap() as i32;
+        let product_result = power_result.0.overflowing_mul(digit);
+        if product_result.1 {
+            return out_of_range(is_positive);
+        }
 
-    for c in bytes.iter().take(end_index).skip(begin_index) {
-        new_bytes.push(*c);
+        let addition_result = result.overflowing_add(product_result.0);
+        if addition_result.1 {
+            return out_of_range(is_positive);
+        }
+
+        result = addition_result.0;
+        exponent += 1;
     }
-
-    let string_digits = match String::from_utf8(new_bytes) {
-        Ok(string_digits) => string_digits,
-        Err(_) => String::new()
-    };
-
-    let result_32 = string_digits.parse::<i32>();
-    if let Ok(result) = result_32 {
-        return result;
-    }
-
-    match is_positive {
-        true => return i32::MAX,
-        false => return i32::MIN
-    }
+    
+    result
 }
 
 fn is_sign(c: u8) -> bool {
@@ -60,4 +67,16 @@ fn is_sign(c: u8) -> bool {
 fn is_digit(search_character: u8) -> bool {
     let result = DIGITS.iter().find(|digit| **digit == search_character);
     result.is_some()
+}
+
+fn digit_to_integer(digit: u8) -> Option<usize> {
+    DIGITS.iter().position(|c| *c == digit)
+}
+
+fn out_of_range(is_positive: bool) -> i32 {
+    if is_positive {
+        i32::MAX
+    } else {
+        i32::MIN
+    }
 }
