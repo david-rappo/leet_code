@@ -4,7 +4,9 @@ mod solution;
 mod tests {
     use crate::solution;
 
-    const PARAMETER_1: [&str; 15] = ["4294967296.50", // This should be clamped to i32::MAX
+    const PARAMETER_1: [&str; 17] = ["words and 987",
+        "  0000000000012345678",
+        "4294967296.50", // This should be clamped to i32::MAX
         "-42.0",
         "42",
         "-42",
@@ -19,7 +21,10 @@ mod tests {
         "+2147483648", // This should be clamped to i32::MAX
         "-2147483648",
         " -2147483649 "]; // This should be clamped to i32::MIN
-    const EXPECTED_RESULT: [i32; 15] = [i32::MAX,
+    const EXPECTED_RESULT: [i32; 17] = [
+        0,
+        12345678,
+        i32::MAX,
         -42,
         42,
         -42,

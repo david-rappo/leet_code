@@ -22,6 +22,16 @@ pub fn string_to_integer(s: String) -> i32 {
     if begin_index == bytes.len() {
         return 0;
     }
+
+    let begin_index = first_non_zero_digit_index(bytes, begin_index);
+    let begin_index = match begin_index {
+        Some(begin_index) => begin_index,
+        None => bytes.len()
+    };
+
+    if begin_index == bytes.len() {
+        return 0;
+    }
     
     let end_index = first_non_digit_index(bytes, begin_index);
     let end_index = match end_index {
@@ -97,6 +107,23 @@ fn first_non_digit_index(bytes: &[u8], begin_index: usize) -> Option<usize> {
         if !is_digit(*p.1) {
             // enumerate always starts at zero.
             return Some(p.0 + begin_index);
+        }
+    }
+    
+    None
+}
+
+fn first_non_zero_digit_index(bytes: &[u8], begin_index: usize) -> Option<usize> {
+    for p in bytes.iter().skip(begin_index).enumerate() {
+        let c = *p.1;
+        if is_digit(c) {
+            let zero_digit = DIGITS[0];
+            if zero_digit != c {
+                // enumerate always starts at zero.
+                return Some(p.0 + begin_index);
+            }
+        } else {
+            return None
         }
     }
     
