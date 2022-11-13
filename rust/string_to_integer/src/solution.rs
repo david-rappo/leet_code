@@ -3,6 +3,7 @@ const MINUS: u8 = b'-';
 const PLUS: u8 = b'+';
 const DIGITS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9'];
 
+#[allow(dead_code)]
 pub fn string_to_integer(s: String) -> i32 {
     let bytes = s.as_bytes();
     let begin_index = bytes.iter().position(|c| *c != BLANK);
@@ -22,8 +23,7 @@ pub fn string_to_integer(s: String) -> i32 {
         return 0;
     }
     
-    let end_index = bytes.iter().skip(begin_index).position(
-        |c| !is_digit(*c));
+    let end_index = first_non_digit_index(bytes, begin_index);
     let end_index = match end_index {
         Some(end_index) => end_index,
         None => bytes.len()
@@ -54,9 +54,20 @@ pub fn string_to_integer(s: String) -> i32 {
         }
 
         result = addition_result.0;
-        exponent += 1;
+        if exponent > 0 {
+            exponent -= 1;
+        }
     }
-    
+
+    if !is_positive {
+        let product_result = result.overflowing_mul(-1);
+        if product_result.1 {
+            return out_of_range(is_positive);
+        }
+
+        result = product_result.0;
+    }
+
     result
 }
 
@@ -79,4 +90,15 @@ fn out_of_range(is_positive: bool) -> i32 {
     } else {
         i32::MIN
     }
+}
+
+fn first_non_digit_index(bytes: &[u8], begin_index: usize) -> Option<usize> {
+    for p in bytes.iter().skip(begin_index).enumerate() {
+        if !is_digit(*p.1) {
+            // enumerate always starts at zero.
+            return Some(p.0 + begin_index);
+        }
+    }
+    
+    None
 }
