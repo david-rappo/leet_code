@@ -1,10 +1,12 @@
-use std::collections::HashMap;
-
 const BLANK: u8 = b' ';
 const MINUS: u8 = b'-';
 const PLUS: u8 = b'+';
 const DIGITS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9'];
-const DIGITS_IN_I32: u32 = 10;
+// EXPONENTS[0] = 10^0
+// EXPONENTS[1] = 10^1
+// EXPONENTS[2] = 10^2
+// And so on...
+const EXPONENTS: [i32; 10] = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
 
 #[allow(dead_code)]
 pub fn string_to_integer(s: String) -> i32 {
@@ -47,16 +49,14 @@ pub fn string_to_integer(s: String) -> i32 {
         return 0;
     }
     
-    let hash_map = create_exponent_to_ten_raised_to_exponent();
     let mut exponent = digit_count - 1;
     let mut result: i32 = 0;
     for digit in bytes.iter().take(end_index).skip(begin_index) {
-        let e = exponent as u32;
-        let power_result = match hash_map.get(&e) {
-            Some(power_result) => power_result,
-            None => return out_of_range(is_positive)
-        };
-        
+        if exponent >= EXPONENTS.len() {
+            return out_of_range(is_positive);
+        }
+
+        let power_result = EXPONENTS[exponent];
         let digit = digit_to_integer(*digit).unwrap() as i32;
         let product_result = power_result.overflowing_mul(digit);
         if product_result.1 {
@@ -133,13 +133,4 @@ fn first_non_zero_digit_index(bytes: &[u8], begin_index: usize) -> Option<usize>
     }
     
     None
-}
-
-fn create_exponent_to_ten_raised_to_exponent() -> HashMap<u32, i32> {
-    let mut hash_map = HashMap::new();
-    for exponent in 0..DIGITS_IN_I32 {
-        hash_map.insert(exponent, 10i32.pow(exponent));
-    }
-
-    hash_map
 }
