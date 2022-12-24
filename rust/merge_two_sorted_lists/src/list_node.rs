@@ -1,3 +1,4 @@
+// ListNode cannot be modified. It is defined by Leet Code.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
     pub val: i32,
