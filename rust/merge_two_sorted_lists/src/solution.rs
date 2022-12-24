@@ -1,5 +1,6 @@
 use crate::list_node::ListNode;
 
+#[allow(dead_code)]
 pub fn merge_two_lists(list1: Option<Box<ListNode>>, list2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     let mut result = None;
     let mut list1 = list1;
@@ -11,32 +12,50 @@ pub fn merge_two_lists(list1: Option<Box<ListNode>>, list2: Option<Box<ListNode>
 
         let value_1 = get_some_node_value(&list1);
         let value_2 = get_some_node_value(&list2);
-        /*
-        if list_1_pair.1 < list_2_pair.1 {
-        } else {
-
-        }
-        */
-        
-        // TODO:
-        /*
         if value_1 < value_2 {
-            !todo
+            let pair = pop_front(list1);
+            list1 = pair.0;
+            result = push_front(result, pair.1);
         } else {
-            result = match result {
-                Some(node) => {
-                    node.
-                }
-                
-            }
+            let pair = pop_front(list2);
+            list2 = pair.0;
+            result = push_front(result, pair.1);
         }
-        */
     }
+
+    let mut list = if list1.is_none() {
+        list2
+    } else {
+        list1
+    };
+
+    if list.is_none() {
+        return reverse(result);
+    }
+
+    while list.is_some() {
+        let pair = pop_front(list);
+        list = pair.0;
+        result = push_front(result, pair.1);
+    }
+    
+    reverse(result)
+}
+
+pub fn reverse(list: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    let mut list = list;
+    let mut result = None;
+    while list.is_some() {
+        let pair = pop_front(list);
+        list = pair.0;
+        result = push_front(result, pair.1);
+    }
+    
     result
 }
 
 // Returns (list without first node, popped node)
-fn pop_front(list: Option<Box<ListNode>>) ->
+pub fn pop_front(list: Option<Box<ListNode>>) ->
     (Option<Box<ListNode>>, Option<Box<ListNode>>) {
     match list {
         Some(list) => {
@@ -49,7 +68,7 @@ fn pop_front(list: Option<Box<ListNode>>) ->
 }
 
 // Add node to the front of list, then return the new list.
-fn push_front(list: Option<Box<ListNode>>, node: Option<Box<ListNode>>) ->
+pub fn push_front(list: Option<Box<ListNode>>, node: Option<Box<ListNode>>) ->
     Option<Box<ListNode>> {
     match list {
         Some(list) => {

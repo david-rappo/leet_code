@@ -6,6 +6,7 @@ pub struct ListNode {
 }
 
 impl ListNode {
+    #[allow(dead_code)]
     fn new(val: i32) -> Self {
         ListNode { val, next: None }
     }
