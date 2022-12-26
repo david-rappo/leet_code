@@ -128,13 +128,10 @@ fn reverse(list: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
 // Returns (list without first node, popped node)
 fn pop_front(list: Option<Box<ListNode>>) -> (Option<Box<ListNode>>, Option<Box<ListNode>>) {
     match list {
-        Some(list) => {
-            let value = list.val;
-            let popped_node = Box::new(ListNode {
-                val: value,
-                next: None,
-            });
-            (list.next, Some(popped_node))
+        Some(mut list) => {
+            let new_list = list.next;
+            list.next = None;
+            (new_list, Some(list))
         }
         None => (None, None),
     }
