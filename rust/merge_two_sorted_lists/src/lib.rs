@@ -12,7 +12,7 @@ mod tests {
         &[0],
         &[10, 11],
         &[]];
-    const MERGE_TWO_LISTS_PARAMETER_2: [&[i32]; 6] = [&[1, 4, 4],
+    const MERGE_TWO_LISTS_PARAMETER_2: [&[i32]; 6] = [&[1, 3, 4],
         &[],
         &[0],
         &[],
