@@ -7,24 +7,27 @@ mod tests {
     use crate::solution;
     use crate::test_utility;
     
-    const MERGE_TWO_LISTS_PARAMETER_1: [&[i32]; 6] = [&[1, 2, 4],
+    const MERGE_TWO_LISTS_PARAMETER_1: [&[i32]; 7] = [&[1, 2, 4],
         &[],
         &[],
         &[0],
         &[10, 11],
-        &[]];
-    const MERGE_TWO_LISTS_PARAMETER_2: [&[i32]; 6] = [&[1, 3, 4],
+        &[],
+        &[20, 30, 40, 50, 60]];
+    const MERGE_TWO_LISTS_PARAMETER_2: [&[i32]; 7] = [&[1, 3, 4],
         &[],
         &[0],
         &[],
         &[],
-        &[10, 11]];
-    const MERGE_TWO_LISTS_EXPECTED_RESULT: [&[i32]; 6] = [&[1, 1, 2, 3, 4, 4],
+        &[10, 11],
+        &[20, 30, 40, 50, 60]];
+    const MERGE_TWO_LISTS_EXPECTED_RESULT: [&[i32]; 7] = [&[1, 1, 2, 3, 4, 4],
         &[],
         &[0],
         &[0],
         &[10, 11],
-        &[10, 11]];
+        &[10, 11],
+        &[20, 20, 30, 30, 40, 40, 50, 50, 60, 60]];
 
     #[test]
     fn test_merge_two_lists() {
