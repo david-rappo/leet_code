@@ -126,9 +126,9 @@ mod tests {
             let expected_result = POP_FRONT_EXPECTED_RESULT[index];
             assert_eq!(result, expected_result);
             if !expected_result.is_empty() {
-                let v = get_list_values(&pair.1);
-                let number = v[0];
-                assert_eq!(expected_result[0], number);
+                let popped_value = get_list_values(&pair.1)[0];
+                let first_value = parameter_1[0];
+                assert_eq!(popped_value, first_value);
             }
         }
     }
