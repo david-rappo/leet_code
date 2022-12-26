@@ -6,7 +6,10 @@ pub fn create_list(mut numbers: Vec<i32>) -> Option<Box<list_node::ListNode>> {
     numbers.reverse();
     let mut result = None;
     for number in numbers {
-        let node = list_node::ListNode { val: number, next: None };
+        let node = list_node::ListNode {
+            val: number,
+            next: None,
+        };
         result = solution::push_front(result, Some(Box::new(node)));
     }
 
@@ -22,12 +25,12 @@ pub fn get_list_values(list: &Option<Box<list_node::ListNode>>) -> Vec<i32> {
             Some(boxed_list) => {
                 result.push(boxed_list.val);
                 list = &boxed_list.next;
-            },
+            }
             None => {
                 return result;
             }
         }
     }
-    
+
     result
 }
