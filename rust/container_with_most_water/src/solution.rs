@@ -1,14 +1,14 @@
 #[allow(dead_code)]
 pub fn max_area(height: Vec<i32>) -> i32 {
     let tallest_left = calculate_tallest_left(&height);
-    let tallest_right = calculate_tallest_right(&height);
     let mut result = 0;
-    let count = height.len() - 1;
-    for index in 0..count {
-        let left = tallest_left[index];
-        let right = tallest_right[index];
-        let area = calculate_area(left, right);
-        result = i32::max(result, area);
+    let position_count = height.len() - 1;
+    for left in tallest_left.iter().take(position_count) {
+        for (index, h) in height.iter().enumerate().skip(left.0 + 1) {
+            let right = (index, *h);
+            let area = calculate_area(left, &right);
+            result = i32::max(result, area);
+        }
     }
 
     result
@@ -49,26 +49,7 @@ fn calculate_tallest_left(heights: &[i32]) -> Vec<(usize, i32)> {
     result
 }
 
-// result[N - 2] is the height of the tallest pillar to the right of position N - 2. position N - 2 is between pillars
-// N - 2 and N - 1.
-fn calculate_tallest_right(heights: &[i32]) -> Vec<(usize, i32)> {
-    let position_count = heights.len() - 1;
-    let mut maximum_height = (position_count, *heights.last().unwrap());
-    let mut result = vec![maximum_height; position_count];
-    let mut result_index = result.len() - 1;
-    for (pillar_index, height) in heights.iter().enumerate().rev().take(position_count) {
-        if height > &maximum_height.1 {
-            maximum_height = (pillar_index, *height);
-        }
-
-        result[result_index] = maximum_height;
-        result_index = result_index.saturating_sub(1);
-    }
-
-    result
-}
-
-fn calculate_area(left: (usize, i32), right: (usize, i32)) -> i32 {
+fn calculate_area(left: &(usize, i32), right: &(usize, i32)) -> i32 {
     debug_assert!(right.0 > left.0);
     let x = right.0 - left.0;
     let h = i32::min(left.1, right.1);
