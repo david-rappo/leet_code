@@ -1,49 +1,24 @@
 #[allow(dead_code)]
 pub fn max_area(height: Vec<i32>) -> i32 {
-    let tallest_left = calculate_tallest_left(&height);
-    let mut result = 0;
-    let position_count = height.len() - 1;
-    for left in tallest_left.iter().take(position_count) {
-        for (index, h) in height.iter().enumerate().skip(left.0 + 1) {
-            let right = (index, *h);
-            let area = calculate_area(left, &right);
-            result = i32::max(result, area);
-        }
+    if height.is_empty() {
+        panic!();
     }
 
-    result
-}
-
-/*
-9
-8
-7
-6
-5                   *
-4         *         *
-3         *       * *
-2       * *       * *
-1       * *     * * *   *
-0       * * * * * * * * * *
-        0 1 2 3 4 5 6 7 8 9
-
-        There are ten pillars.
-        There are nine positions.
-*/
-
-// result[0] is the height of the tallest pillar to the left of position zero. position zero is between pillars zero
-// and pillars one.
-fn calculate_tallest_left(heights: &[i32]) -> Vec<(usize, i32)> {
-    let position_count = heights.len() - 1;
-    let mut maximum_height = (0, heights[0]);
-    let mut result = Vec::new();
-    result.reserve(position_count);
-    for (pillar_index, height) in heights.iter().enumerate().take(position_count) {
-        if *height > maximum_height.1 {
-            maximum_height = (pillar_index, *height);
+    let mut result = 0;
+    let mut left_index = 0;
+    let mut right_index = height.len() - 1;
+    while left_index < right_index {
+        let left_height = height[left_index];
+        let left = (left_index, left_height);
+        let right_height = height[right_index];
+        let right = (right_index, right_height);
+        let area = calculate_area(&left, &right);
+        result = i32::max(result, area);
+        if left_height <= right_height {
+            left_index += 1;
+        } else {
+            right_index = right_index.saturating_sub(1);
         }
-
-        result.push(maximum_height);
     }
 
     result
