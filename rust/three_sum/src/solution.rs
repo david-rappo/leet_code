@@ -4,13 +4,14 @@ use std::collections::HashSet;
 pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
     let mut result = vec![];
     let two_sum_to_indexes = create_two_sum_to_indexes(&nums);
-    for index in 0..nums.len() {
-        let value = nums[index];
+    for pair in nums.iter().enumerate() {
+        let value = pair.1;
         // value + y = 0
         let y = 0 - value;
         if two_sum_to_indexes.contains_key(&y) {
             let set_indexes: &HashSet<(usize, usize)> = two_sum_to_indexes.get(&y).unwrap();
-            let triplets = get_zero_sum_triplets(index, set_indexes, &nums);
+            let mut triplets = get_zero_sum_triplets(pair.0, set_indexes, &nums);
+            result.append(&mut triplets);
         }
     }
 
@@ -47,7 +48,6 @@ fn create_two_sum_to_indexes(numbers: &[i32]) -> HashMap<i32, HashSet<(usize, us
                 // Inserting (0, 1) into a HashSet twice will only succeed for the
                 // first insertion.
                 let pair = if i < j { (i, j) } else { (j, i) };
-
                 if hash_map.contains_key(&sum) {
                     let set_indexes: &mut HashSet<(usize, usize)> = hash_map.get_mut(&sum).unwrap();
                     set_indexes.insert(pair);
