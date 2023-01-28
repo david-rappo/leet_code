@@ -24,10 +24,6 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
         result.push(v);
     }
 
-    if result.is_empty() {
-        result.push(vec![]);
-    }
-
     result
 }
 
