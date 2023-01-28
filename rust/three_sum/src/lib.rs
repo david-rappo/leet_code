@@ -7,10 +7,28 @@ mod tests {
     const PARAMETER_0: [&[i32]; 1] = [&[-1, 0, 1, 2, -1, -4]];
     const EXPECTED_RESULT: [&[&[i32]]; 1] = [&[&[-1, -1, 2], &[-1, 0, 1]]];
 
-    fn check(result: Vec<Vec<i32>>, mut expected_result: Vec<&[i32]>) -> bool {
-        // TODO:
-        for result_vec in result.iter() {}
-        false
+    fn check(result: Vec<Vec<i32>>, expected_result: Vec<&[i32]>) -> bool {
+        let mut count = 0;
+        for expected_result_slice in expected_result.into_iter() {
+            let mut expected_result_vec = expected_result_slice.to_vec();
+            expected_result_vec.sort();
+            let result_vec = result.iter().find(|v| {
+                let mut sorted_v = (*v).to_owned();
+                sorted_v.sort();
+                sorted_v == expected_result_vec
+            });
+
+            match result_vec {
+                Some(_) => {
+                    count += 1;
+                }
+                None => {
+                    return false;
+                }
+            }
+        }
+
+        count == result.len()
     }
 
     #[test]
