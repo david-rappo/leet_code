@@ -4,8 +4,8 @@ mod solution;
 mod tests {
     use crate::solution::three_sum;
 
-    const PARAMETER_0: [&[i32]; 1] = [&[-1, 0, 1, 2, -1, -4]];
-    const EXPECTED_RESULT: [&[&[i32]]; 1] = [&[&[-1, -1, 2], &[-1, 0, 1]]];
+    const PARAMETER_0: [&[i32]; 3] = [&[-1, 0, 1, 2, -1, -4], &[0, 1, 1], &[0, 0, 0]];
+    const EXPECTED_RESULT: [&[&[i32]]; 3] = [&[&[-1, -1, 2], &[-1, 0, 1]], &[&[]], &[&[0, 0, 0]]];
 
     fn check(result: Vec<Vec<i32>>, expected_result: Vec<&[i32]>) -> bool {
         let mut count = 0;

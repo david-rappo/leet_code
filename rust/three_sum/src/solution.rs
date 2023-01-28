@@ -3,7 +3,7 @@ use std::collections::HashSet;
 
 #[allow(dead_code)]
 pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
-    let mut result = vec![];
+    let mut set_results = HashSet::new();
     let two_sum_to_indexes = create_two_sum_to_indexes(&nums);
     for pair in nums.iter().enumerate() {
         let value = pair.1;
@@ -11,12 +11,23 @@ pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
         let y = 0 - value;
         if two_sum_to_indexes.contains_key(&y) {
             let set_indexes: &HashSet<(usize, usize)> = two_sum_to_indexes.get(&y).unwrap();
-            let mut triplets = get_zero_sum_triplets(pair.0, set_indexes, &nums);
-            result.append(&mut triplets);
+            let triplets = get_zero_sum_triplets(pair.0, set_indexes, &nums);
+            for triplet in triplets.into_iter() {
+                set_results.insert(triplet);
+            }
         }
     }
 
-    println!("{:?}", result);
+    let mut result = vec![];
+    result.reserve(set_results.len());
+    for v in set_results.into_iter() {
+        result.push(v);
+    }
+
+    if result.is_empty() {
+        result.push(vec![]);
+    }
+
     result
 }
 
@@ -28,17 +39,10 @@ fn get_zero_sum_triplets(
     let mut result = vec![];
     for pair in set_indexes.iter() {
         debug_assert!(pair.0 < pair.1);
-        if (numbers[index] != numbers[pair.0]) && (numbers[index] != numbers[pair.1]) {
-            if numbers[index] < numbers[pair.0] {
-                let v = vec![numbers[index], numbers[pair.0], numbers[pair.1]];
-                result.push(v);
-            } else if numbers[index] < numbers[pair.1] {
-                let v = vec![numbers[pair.0], numbers[index], numbers[pair.1]];
-                result.push(v);
-            } else {
-                let v = vec![numbers[pair.0], numbers[pair.1], numbers[index]];
-                result.push(v);
-            }
+        if (index != pair.0) && (index != pair.1) {
+            let mut v = vec![numbers[index], numbers[pair.0], numbers[pair.1]];
+            v.sort();
+            result.push(v);
         }
     }
 
@@ -49,10 +53,7 @@ fn create_two_sum_to_indexes(numbers: &[i32]) -> HashMap<i32, HashSet<(usize, us
     let mut hash_map = HashMap::new();
     for i in 0..numbers.len() {
         for j in 0..numbers.len() {
-            // i and j should:
-            // - Be different
-            // - Also refer to different values
-            if numbers[i] != numbers[j] {
+            if i != j {
                 let sum = numbers[i] + numbers[j];
                 // (1, 0) and (0, 1) refer to the same elements in numbers. However,
                 // if the smallest index is always first in the pair then:
