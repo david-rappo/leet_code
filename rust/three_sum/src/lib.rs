@@ -3,6 +3,7 @@ mod solution;
 #[cfg(test)]
 mod tests {
     use crate::solution::three_sum;
+    use crate::solution::three_sum_solution_two;
 
     const PARAMETER_0: [&[i32]; 3] = [&[-1, 0, 1, 2, -1, -4], &[0, 1, 1], &[0, 0, 0]];
     const EXPECTED_RESULT: [&[&[i32]]; 3] = [&[&[-1, -1, 2], &[-1, 0, 1]], &[], &[&[0, 0, 0]]];
@@ -36,6 +37,16 @@ mod tests {
         for index in 0..PARAMETER_0.len() {
             let parameter_0 = PARAMETER_0[index];
             let result = three_sum(parameter_0.to_vec());
+            let expected_result = EXPECTED_RESULT[index].to_vec();
+            assert!(check(result, expected_result));
+        }
+    }
+
+    #[test]
+    fn test_solution_two() {
+        for index in 0..PARAMETER_0.len() {
+            let parameter_0 = PARAMETER_0[index];
+            let result = three_sum_solution_two(parameter_0.to_vec());
             let expected_result = EXPECTED_RESULT[index].to_vec();
             assert!(check(result, expected_result));
         }

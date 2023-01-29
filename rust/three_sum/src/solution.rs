@@ -2,6 +2,41 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 
 #[allow(dead_code)]
+pub fn three_sum_solution_two(nums: Vec<i32>) -> Vec<Vec<i32>> {
+    let mut sorted_numbers = nums;
+    sorted_numbers.sort();
+    let mut set_results = HashSet::new();
+    for index in 0..sorted_numbers.len() {
+        let mut j = index + 1;
+        let mut k = sorted_numbers.len() - 1;
+        while j < k {
+            let sum = sorted_numbers[index] + sorted_numbers[j] + sorted_numbers[k];
+            if 0 == sum {
+                set_results.insert(vec![
+                    sorted_numbers[index],
+                    sorted_numbers[j],
+                    sorted_numbers[k],
+                ]);
+                j += 1;
+                k -= 1;
+            } else if sum < 0 {
+                j += 1;
+            } else {
+                k -= 1;
+            }
+        }
+    }
+
+    let mut result = vec![];
+    result.reserve(set_results.len());
+    for v in set_results.into_iter() {
+        result.push(v);
+    }
+
+    result
+}
+
+#[allow(dead_code)]
 pub fn three_sum(nums: Vec<i32>) -> Vec<Vec<i32>> {
     let mut set_results = HashSet::new();
     let two_sum_to_indexes = create_two_sum_to_indexes(&nums);
