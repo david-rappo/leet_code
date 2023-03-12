@@ -1,6 +1,7 @@
 // nums = { 0, 1, 2, 2, 2, 3, 4, 5 }
 //                   X: Remaining elements in the array are copied here.
 // nums = { 0, 1, 2, 3, 4, 5, ?, ? }
+#[allow(dead_code)]
 pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
     if nums.len() < 2 {
         return nums.len() as i32;
@@ -22,10 +23,20 @@ pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
                 let duplicate_count = length - 1;
                 count -= duplicate_count;
                 begin_index = target_begin_index;
+                end_index = begin_index + 1;
             }
         } else {
             end_index += 1;
         }
+    }
+
+    let length = count - begin_index;
+    if length > 1 {
+        // For example,
+        //                    *     *
+        // nums =   [1, 2, 3, 4, 4, X]
+        // Indexes:  0  1  2  3  4, 5
+        count = begin_index + 1;
     }
 
     count as i32
@@ -34,10 +45,11 @@ pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
 fn copy(
     source_begin_index: usize,
     source_end_index: usize,
-    target_begin_index: usize,
-    v: &mut Vec<i32>,
+    mut target_begin_index: usize,
+    v: &mut [i32],
 ) {
-    let source_slice = &mut v[source_begin_index..source_end_index];
-    let target_slice = &mut v[target_begin_index..];
-    target_slice.copy_from_slice(source_slice);
+    for index in source_begin_index..source_end_index {
+        v[target_begin_index] = v[index];
+        target_begin_index += 1;
+    }
 }
