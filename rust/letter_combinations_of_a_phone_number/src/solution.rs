@@ -11,10 +11,14 @@ const DIGIT_TO_LETTERS: [&[u8]; 10] = [
     &[b'w', b'x', b'y', b'z'],
 ];
 
+#[allow(dead_code)]
 pub fn letter_combinations(digits: String) -> Vec<String> {
     let mut results = vec![];
-    let bytes = digits.as_bytes();
-    helper(String::new(), 0, bytes, &mut results);
+    if !digits.is_empty() {
+        let bytes = digits.as_bytes();
+        helper(String::new(), 0, bytes, &mut results);
+    }
+
     results
 }
 
@@ -28,7 +32,8 @@ fn helper(prefix: String, index: usize, digits: &[u8], results: &mut Vec<String>
     let digit = char::from_u32(digit as u32).unwrap().to_digit(10).unwrap();
     let letters = DIGIT_TO_LETTERS[digit as usize];
     for letter in letters {
-        let new_prefix = format!("{}{}", prefix, letter);
+        let character = char::from_u32(*letter as u32).unwrap();
+        let new_prefix = format!("{}{}", prefix, character);
         helper(new_prefix, index + 1, digits, results);
     }
 }
