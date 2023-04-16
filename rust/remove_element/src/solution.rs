@@ -42,7 +42,7 @@ pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
     left_index as i32
 }
 
-fn find_equal(v: &Vec<i32>, begin_index: usize, value: i32) -> Option<usize> {
+fn find_equal(v: &[i32], begin_index: usize, value: i32) -> Option<usize> {
     for (index, x) in v.iter().enumerate().skip(begin_index) {
         if *x == value {
             return Some(index);
@@ -52,7 +52,7 @@ fn find_equal(v: &Vec<i32>, begin_index: usize, value: i32) -> Option<usize> {
     None
 }
 
-fn find_reverse_not_equal(v: &Vec<i32>, begin_index: usize, value: i32) -> Option<usize> {
+fn find_reverse_not_equal(v: &[i32], begin_index: usize, value: i32) -> Option<usize> {
     let mut index = begin_index;
     loop {
         if v[index] != value {
