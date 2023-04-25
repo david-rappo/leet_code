@@ -4,6 +4,7 @@ use std::{collections::HashMap, collections::HashSet};
 pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     let pair_sums = create_pair_sums(&nums);
     let mut result = vec![];
+    let mut seen: Vec<HashSet<usize>> = vec![];
     for i in 0..nums.len() {
         for j in (i + 1)..nums.len() {
             let number_i = nums[i];
@@ -13,11 +14,12 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
             // other = target - sum
             let other = target - sum;
             if pair_sums.contains_key(&other) {
-                let vec_pair = pair_sums.get(&other).unwrap();
-                for p in vec_pair {
+                let vec_pairs = pair_sums.get(&other).unwrap();
+                for p in vec_pairs {
                     let hash_set = create_hash_set((i, j), *p);
-                    let v = vec![nums[i], nums[j], nums[p.0], nums[p.1]];
-                    if (hash_set.len() == 4) && (!result.contains(&v)) {
+                    if (hash_set.len() == 4) && (!seen.contains(&hash_set)) {
+                        let v = create_vec(&nums, &hash_set);
+                        seen.push(hash_set);
                         result.push(v);
                     }
                 }
@@ -26,6 +28,16 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     }
 
     result
+}
+
+fn create_vec(numbers: &[i32], hash_set: &HashSet<usize>) -> Vec<i32> {
+    let mut v = vec![];
+    v.reserve(hash_set.len());
+    for index in hash_set {
+        v.push(numbers[*index]);
+    }
+
+    v
 }
 
 fn create_hash_set(left: (usize, usize), right: (usize, usize)) -> HashSet<usize> {
