@@ -17,7 +17,7 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
                 let vec_pairs = pair_sums.get(&other).unwrap();
                 for p in vec_pairs {
                     let hash_set = create_hash_set((i, j), *p);
-                    if (hash_set.len() == 4) && (!seen.contains(&hash_set)) {
+                    if should_add(&nums, &seen, &hash_set) {
                         let v = create_vec(&nums, &hash_set);
                         seen.push(hash_set);
                         result.push(v);
@@ -28,6 +28,28 @@ pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     }
 
     result
+}
+
+fn should_add(numbers: &[i32], seen: &[HashSet<usize>], hash_set: &HashSet<usize>) -> bool {
+    if hash_set.len() != 4 {
+        return false;
+    }
+
+    for seen_hash_set in seen {
+        if hash_set.is_subset(seen_hash_set) {
+            return false;
+        }
+
+        let mut seen_vec = create_vec(numbers, seen_hash_set);
+        seen_vec.sort();
+        let mut vec = create_vec(numbers, hash_set);
+        vec.sort();
+        if seen_vec == vec {
+            return false;
+        }
+    }
+
+    true
 }
 
 fn create_vec(numbers: &[i32], hash_set: &HashSet<usize>) -> Vec<i32> {
