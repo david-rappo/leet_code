@@ -1,6 +1,51 @@
 use std::{collections::HashMap, collections::HashSet};
 
 #[allow(dead_code)]
+pub fn four_sum_gold(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
+    if nums.is_empty() {
+        return vec![];
+    }
+
+    // Pair sums in the range [0, i) are stored in pair_sums.
+    // Pair sums in the range [i + 1, nums.len()) are not.
+    // ... i ...
+    let mut result = vec![];
+    let mut pair_sums = HashMap::new();
+    for i in 1..nums.len() - 1 {
+        let number_i = nums[i];
+        for j in nums.iter().take(i) {
+            let sum = number_i + j;
+            if let std::collections::hash_map::Entry::Vacant(e) = pair_sums.entry(sum) {
+                e.insert(vec![(number_i, *j)]);
+            } else {
+                let vec_pair: &mut Vec<(i32, i32)> = pair_sums.get_mut(&sum).unwrap();
+                vec_pair.push((number_i, *j));
+            }
+        }
+
+        // For example,
+        // Indexes = 0 1 2 3 4 5 6 7 8 9
+        // i = 3           *
+        // j =               *
+        for j in nums.iter().skip(i + 1) {
+            let sum = number_i + j;
+            // target = sum + other
+            // other = target - sum
+            let other = target - sum;
+            if pair_sums.contains_key(&other) {
+                let vec_pairs = pair_sums.get(&other).unwrap();
+                for p in vec_pairs {
+                    let v = vec![p.0, p.1, number_i, *j];
+                    result.push(v);
+                }
+            }
+        }
+    }
+
+    result
+}
+
+#[allow(dead_code)]
 pub fn four_sum(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     let pair_sums = create_pair_sums(&nums);
     let mut result = vec![];
