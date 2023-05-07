@@ -70,7 +70,6 @@ mod tests {
         let target = TARGET[0];
         let expected_result = EXPECTED_RESULT[0];
         let result = solution::four_sum_gold(numbers, target);
-        // TODO: Does not work.
         println!("test_solution_gold_0: {:?}", result);
         let check_result = check(&result, expected_result);
         assert!(check_result);
@@ -82,7 +81,6 @@ mod tests {
         let target = TARGET[1];
         let expected_result = EXPECTED_RESULT[1];
         let result = solution::four_sum_gold(numbers, target);
-        // TODO: Does not work.
         println!("test_solution_gold_1: {:?}", result);
         let check_result = check(&result, expected_result);
         assert!(check_result);

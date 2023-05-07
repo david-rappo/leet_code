@@ -1,48 +1,57 @@
 use std::{collections::HashMap, collections::HashSet};
 
+// This is the LeetCode solution.
 #[allow(dead_code)]
 pub fn four_sum_gold(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
-    if nums.is_empty() {
+    let mut sorted = nums;
+    sorted.sort();
+    k_sum(&sorted, target, 0, 4)
+}
+
+// k represents the number of values to sum to make target.
+fn k_sum(sorted: &[i32], target: i32, begin_index: usize, k: i32) -> Vec<Vec<i32>> {
+    if begin_index >= sorted.len() {
         return vec![];
     }
 
-    // Pair sums in the range [0, i) are stored in pair_sums.
-    // Pair sums in the range [i + 1, nums.len()) are not.
-    // ... i ...
-    let mut result = vec![];
-    let mut pair_sums = HashMap::new();
-    for i in 1..nums.len() - 1 {
-        let number_i = nums[i];
-        for j in nums.iter().take(i) {
-            let sum = number_i + j;
-            if let std::collections::hash_map::Entry::Vacant(e) = pair_sums.entry(sum) {
-                e.insert(vec![(number_i, *j)]);
-            } else {
-                let vec_pair: &mut Vec<(i32, i32)> = pair_sums.get_mut(&sum).unwrap();
-                vec_pair.push((number_i, *j));
-            }
-        }
+    let average_value = target / k;
+    // If the first value in the range beginning at begin_index is greater than
+    // average_value then every value after it is also greater than average_value.
+    // (because the values are sorted). Therefore, none of the numbers in the range
+    // can possibly sum to target.
+    //
+    // If the last value in the range is less than average_value then none of the
+    // other values in the range can be large enough to sum to target.
+    if (sorted[begin_index] > average_value) || (*sorted.last().unwrap() < average_value) {
+        return vec![];
+    }
 
-        // For example,
-        // Indexes = 0 1 2 3 4 5 6 7 8 9
-        // i = 3           *
-        // j =               *
-        for j in nums.iter().skip(i + 1) {
-            let sum = number_i + j;
-            // target = sum + other
-            // other = target - sum
-            let other = target - sum;
-            if pair_sums.contains_key(&other) {
-                let vec_pairs = pair_sums.get(&other).unwrap();
-                for p in vec_pairs {
-                    let v = vec![p.0, p.1, number_i, *j];
-                    result.push(v);
-                }
+    if k == 2 {
+        return two_sum(sorted, target, begin_index);
+    }
+
+    let mut result: Vec<Vec<i32>> = vec![];
+    for index in begin_index..sorted.len() {
+        // If either:
+        // - Processing the first value in the range
+        // - The current value is not equal to the previous value
+        if (index == begin_index) || (sorted[index - 1] != sorted[index]) {
+            let k_sum_result = k_sum(sorted, target - sorted[index], index + 1, k - 1);
+            for sums in k_sum_result.into_iter() {
+                let mut v = vec![];
+                v.reserve(k as usize);
+                v.push(sorted[index]);
+                v.extend(sums);
+                result.push(v);
             }
         }
     }
 
     result
+}
+
+fn two_sum(sorted: &[i32], target: i32, begin_index: usize) -> Vec<Vec<i32>> {
+    vec![]
 }
 
 #[allow(dead_code)]
