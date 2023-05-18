@@ -1,6 +1,6 @@
 use std::{collections::HashMap, collections::HashSet};
 
-// This is the LeetCode solution.
+// This is the LeetCode solution (converted from C++ to Rust).
 #[allow(dead_code)]
 pub fn four_sum_gold(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     let mut sorted = nums;
@@ -51,7 +51,31 @@ fn k_sum(sorted: &[i32], target: i32, begin_index: usize, k: i32) -> Vec<Vec<i32
 }
 
 fn two_sum(sorted: &[i32], target: i32, begin_index: usize) -> Vec<Vec<i32>> {
-    vec![]
+    assert!(sorted.len() > 1);
+    let mut i = begin_index;
+    let mut j = sorted.len() - 1;
+    let mut result = vec![];
+    while i < j {
+        use std::cmp::Ordering;
+
+        let sum = sorted[i] + sorted[j];
+        match sum.cmp(&target) {
+            Ordering::Greater => {
+                j = j.saturating_sub(1);
+            }
+            Ordering::Equal => {
+                let v = vec![sorted[i], sorted[j]];
+                result.push(v);
+                i += 1;
+                j = j.saturating_sub(1);
+            }
+            Ordering::Less => {
+                i += 1;
+            }
+        }
+    }
+
+    result
 }
 
 #[allow(dead_code)]
