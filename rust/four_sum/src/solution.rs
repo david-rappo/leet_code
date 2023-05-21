@@ -5,16 +5,16 @@ use std::{collections::HashMap, collections::HashSet};
 pub fn four_sum_gold(nums: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     let mut sorted = nums;
     sorted.sort();
-    k_sum(&sorted, target, 0, 4)
+    k_sum(&sorted, target as i64, 0, 4)
 }
 
 // k represents the number of values to sum to make target.
-fn k_sum(sorted: &[i32], target: i32, begin_index: usize, k: i32) -> Vec<Vec<i32>> {
+fn k_sum(sorted: &[i32], target: i64, begin_index: usize, k: i32) -> Vec<Vec<i32>> {
     if begin_index >= sorted.len() {
         return vec![];
     }
 
-    let average_value = target / k;
+    let average_value = target / (k as i64);
     // If the first value in the range beginning at begin_index is greater than
     // average_value then every value after it is also greater than average_value.
     // (because the values are sorted). Therefore, none of the numbers in the range
@@ -22,7 +22,8 @@ fn k_sum(sorted: &[i32], target: i32, begin_index: usize, k: i32) -> Vec<Vec<i32
     //
     // If the last value in the range is less than average_value then none of the
     // other values in the range can be large enough to sum to target.
-    if (sorted[begin_index] > average_value) || (*sorted.last().unwrap() < average_value) {
+    let last = (*sorted.last().unwrap()) as i64;
+    if ((sorted[begin_index] as i64) > average_value) || (last < average_value) {
         return vec![];
     }
 
@@ -36,7 +37,7 @@ fn k_sum(sorted: &[i32], target: i32, begin_index: usize, k: i32) -> Vec<Vec<i32
         // - Processing the first value in the range
         // - The current value is not equal to the previous value
         if (index == begin_index) || (!is_equal(sorted, index - 1, index)) {
-            let k_sum_result = k_sum(sorted, target - sorted[index], index + 1, k - 1);
+            let k_sum_result = k_sum(sorted, target - (sorted[index] as i64), index + 1, k - 1);
             for sums in k_sum_result.into_iter() {
                 let mut v = vec![];
                 v.reserve(k as usize);
@@ -54,13 +55,13 @@ fn is_equal(slice: &[i32], i: usize, j: usize) -> bool {
     slice[i] == slice[j]
 }
 
-fn two_sum(sorted: &[i32], target: i32, begin_index: usize) -> Vec<Vec<i32>> {
+fn two_sum(sorted: &[i32], target: i64, begin_index: usize) -> Vec<Vec<i32>> {
     let mut result = vec![];
     let mut i = begin_index;
     assert!(!sorted.is_empty());
     let mut j = sorted.len() - 1;
     while i < j {
-        let sum = sorted[i] + sorted[j];
+        let sum = (sorted[i] + sorted[j]) as i64;
         let is_not_first = i > begin_index;
         let is_not_last = (j < sorted.len()) && ((j + 1) != sorted.len());
         if (sum < target) || (is_not_first && is_equal(sorted, i - 1, i)) {
