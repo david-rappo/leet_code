@@ -35,7 +35,7 @@ fn k_sum(sorted: &[i32], target: i32, begin_index: usize, k: i32) -> Vec<Vec<i32
         // If either:
         // - Processing the first value in the range
         // - The current value is not equal to the previous value
-        if (index == begin_index) || (sorted[index - 1] != sorted[index]) {
+        if (index == begin_index) || (!is_equal(sorted, index - 1, index)) {
             let k_sum_result = k_sum(sorted, target - sorted[index], index + 1, k - 1);
             for sums in k_sum_result.into_iter() {
                 let mut v = vec![];
@@ -50,28 +50,28 @@ fn k_sum(sorted: &[i32], target: i32, begin_index: usize, k: i32) -> Vec<Vec<i32
     result
 }
 
-fn two_sum(sorted: &[i32], target: i32, begin_index: usize) -> Vec<Vec<i32>> {
-    assert!(sorted.len() > 1);
-    let mut i = begin_index;
-    let mut j = sorted.len() - 1;
-    let mut result = vec![];
-    while i < j {
-        use std::cmp::Ordering;
+fn is_equal(slice: &[i32], i: usize, j: usize) -> bool {
+    slice[i] == slice[j]
+}
 
+fn two_sum(sorted: &[i32], target: i32, begin_index: usize) -> Vec<Vec<i32>> {
+    let mut result = vec![];
+    let mut i = begin_index;
+    assert!(!sorted.is_empty());
+    let mut j = sorted.len() - 1;
+    while i < j {
         let sum = sorted[i] + sorted[j];
-        match sum.cmp(&target) {
-            Ordering::Greater => {
-                j = j.saturating_sub(1);
-            }
-            Ordering::Equal => {
-                let v = vec![sorted[i], sorted[j]];
-                result.push(v);
-                i += 1;
-                j = j.saturating_sub(1);
-            }
-            Ordering::Less => {
-                i += 1;
-            }
+        let is_not_first = i > begin_index;
+        let is_not_last = (j < sorted.len()) && ((j + 1) != sorted.len());
+        if (sum < target) || (is_not_first && is_equal(sorted, i - 1, i)) {
+            i += 1;
+        } else if (sum > target) || (is_not_last && is_equal(sorted, j, j + 1)) {
+            j -= 1;
+        } else {
+            let v = vec![sorted[i], sorted[j]];
+            result.push(v);
+            i += 1;
+            j -= 1;
         }
     }
 
